@@ -4,6 +4,7 @@ using Identity.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Identity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231129042622_simplified")]
+    partial class simplified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,6 +142,10 @@ namespace Identity.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MeetingType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SerializedAttendeeUsernames")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -417,21 +424,21 @@ namespace Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4754a8da-741e-4a01-a46f-f1504efcdfd1",
+                            Id = "f366c98e-119e-4373-b655-a8e26800bbab",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "259ab8f5-9ec2-4415-aa65-b4e3ea14a986",
+                            Id = "46d52394-f88a-4feb-9763-16c4e5778b63",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
                         },
                         new
                         {
-                            Id = "3d4594bc-5731-474f-97e1-57f085015de2",
+                            Id = "52e60977-1632-4dd6-b144-6592113fd05b",
                             ConcurrencyStamp = "3",
                             Name = "HR",
                             NormalizedName = "HR"

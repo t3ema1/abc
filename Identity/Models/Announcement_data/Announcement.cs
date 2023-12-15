@@ -15,5 +15,7 @@ namespace Identity.Models
 
         [Required]
         public int PublishedTo { get; set; }
+
+        public DateTime AnnouncementDate { get; set; }
     }
 }
