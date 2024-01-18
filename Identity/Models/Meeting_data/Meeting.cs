@@ -27,8 +27,10 @@ namespace Identity.Models.Meeting_data
         public string MeetingLink { get; set; }
         [NotMapped]
         public ICollection<string> AttendeeUsernames { get; set; }
-       
-       
+        [Required]
+        public string CreatedBy { get; set; }
+
+
         [Required]
         public DateTime AnnouncementDate { get; set; }
         [Required]

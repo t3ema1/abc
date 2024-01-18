@@ -33,6 +33,10 @@ namespace Identity.Migrations
                     b.Property<DateTime>("AnnouncementDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Createdby")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LabelName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -101,6 +105,10 @@ namespace Identity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("meeting_CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MeetingId");
@@ -118,6 +126,10 @@ namespace Identity.Migrations
 
                     b.Property<DateTime>("AnnouncementDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -162,6 +174,10 @@ namespace Identity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Createdby")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Header")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -192,6 +208,10 @@ namespace Identity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Createdby")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Header")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -219,6 +239,10 @@ namespace Identity.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Createdby")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -283,6 +307,10 @@ namespace Identity.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Createdby")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Header")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -311,6 +339,10 @@ namespace Identity.Migrations
 
                     b.Property<int>("AnnouncementId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Createdby")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LabelName")
                         .IsRequired()
@@ -342,6 +374,10 @@ namespace Identity.Migrations
                     b.Property<int>("AnnouncementId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Createdby")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LabelName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -371,6 +407,10 @@ namespace Identity.Migrations
 
                     b.Property<int>("AnnouncementId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Createdby")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LabelName")
                         .IsRequired()
@@ -417,21 +457,21 @@ namespace Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4754a8da-741e-4a01-a46f-f1504efcdfd1",
+                            Id = "66473b84-3a94-4a0a-93d6-47d709c46d9e",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "259ab8f5-9ec2-4415-aa65-b4e3ea14a986",
+                            Id = "a08636fd-b4d7-426f-a0e4-c12705389a43",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
                         },
                         new
                         {
-                            Id = "3d4594bc-5731-474f-97e1-57f085015de2",
+                            Id = "808969c0-93aa-4831-9e5f-243a38300caf",
                             ConcurrencyStamp = "3",
                             Name = "HR",
                             NormalizedName = "HR"

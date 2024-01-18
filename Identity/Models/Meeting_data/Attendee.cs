@@ -21,6 +21,9 @@ namespace Identity.Models.Meeting_data
         public Meeting Meeting { get; set; }
 
         [Required]
+        public string meeting_CreatedBy { get; set; }
+
+        [Required]
         public DateTime MeetingDate { get; set; }
     }
 }

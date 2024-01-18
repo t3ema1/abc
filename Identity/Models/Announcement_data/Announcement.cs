@@ -16,6 +16,10 @@ namespace Identity.Models
         [Required]
         public int PublishedTo { get; set; }
 
+        [Required]
+        public string Createdby { get; set; }
+
+
         public DateTime AnnouncementDate { get; set; }
     }
 }

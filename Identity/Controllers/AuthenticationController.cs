@@ -193,7 +193,8 @@ namespace Identity.Controllers
                     LabelName = announcement.LabelName,
                     MessageBody = announcement.MessageBody,
                     PublishedTo = announcement.PublishedTo,
-                    AnnouncementDate = announcement.AnnouncementDate
+                    AnnouncementDate = announcement.AnnouncementDate,
+                    Createdby = User.Identity.Name
                 };
                 _context.Announcements.Add(newAnnouncement);
                 await _context.SaveChangesAsync();
@@ -209,7 +210,8 @@ namespace Identity.Controllers
                             LabelName = announcement.LabelName,
                             MessageBody = announcement.MessageBody,
                             PublishedTo = announcement.PublishedTo,
-                            AnnouncementDate = announcement.AnnouncementDate
+                            AnnouncementDate = announcement.AnnouncementDate,
+                            Createdby = User.Identity.Name
                         };
                         _context.AdminAnnouncements.Add(adminAnnouncement);
                         
@@ -223,7 +225,8 @@ namespace Identity.Controllers
                             LabelName = announcement.LabelName,
                             MessageBody = announcement.MessageBody,
                             PublishedTo = announcement.PublishedTo,
-                            AnnouncementDate = announcement.AnnouncementDate
+                            AnnouncementDate = announcement.AnnouncementDate,
+                            Createdby = User.Identity.Name
                         };
                         _context.HrAnnouncements.Add(hrAnnouncement);
                        
@@ -236,7 +239,8 @@ namespace Identity.Controllers
                             LabelName = announcement.LabelName,
                             MessageBody = announcement.MessageBody,
                             PublishedTo = announcement.PublishedTo,
-                            AnnouncementDate = announcement.AnnouncementDate
+                            AnnouncementDate = announcement.AnnouncementDate,
+                            Createdby = User.Identity.Name
                         };
                         _context.EmployeeAnnouncements.Add(employeeAnnouncement);
 
@@ -512,7 +516,8 @@ namespace Identity.Controllers
                     Header = ntaStory.Header,
                     Body = ntaStory.Body,
                     PublishedTo = ntaStory.PublishedTo,
-                    AnnouncementDate = ntaStory.AnnouncementDate
+                    AnnouncementDate = ntaStory.AnnouncementDate,
+                    Createdby = User.Identity.Name
                 };
 
 
@@ -528,8 +533,9 @@ namespace Identity.Controllers
                             Body = ntaStory.Body,
                             PublishedTo = ntaStory.PublishedTo,
                             AnnouncementDate = ntaStory.AnnouncementDate,
-                            StorytId = newNTAstory.Id
-                            
+                            StorytId = newNTAstory.Id,
+                            Createdby = User.Identity.Name
+
                         };
                         _context.AdminNTAstories.Add(adminNTAstory);
                         await _context.SaveChangesAsync();
@@ -542,7 +548,8 @@ namespace Identity.Controllers
                             Body = ntaStory.Body,
                             PublishedTo = ntaStory.PublishedTo,
                             AnnouncementDate = ntaStory.AnnouncementDate,
-                            StorytId = newNTAstory.Id
+                            StorytId = newNTAstory.Id,
+                            Createdby = User.Identity.Name
 
                         };
                         _context.HrNTAstories.Add(hrNTAstory);
@@ -556,7 +563,8 @@ namespace Identity.Controllers
                             Body = ntaStory.Body,
                             PublishedTo = ntaStory.PublishedTo,
                             AnnouncementDate = ntaStory.AnnouncementDate,
-                            StorytId = newNTAstory.Id
+                            StorytId = newNTAstory.Id,
+                            Createdby = User.Identity.Name
 
 
                         };
@@ -855,12 +863,13 @@ public async Task<IActionResult> UpdateNTAstory(int ntaStoryId, [FromBody] NTAst
 
 
 
-
+        [Authorize(Roles = "Admin, HR, User")]
         [HttpPost("addmeeting")]
         public async Task<IActionResult> AddMeeting([FromBody] Meeting meeting)
         {
             try
             {
+                meeting.CreatedBy = User.Identity.Name;
                 _context.Meetings.Add(meeting);
                 await _context.SaveChangesAsync();
 
@@ -873,8 +882,10 @@ public async Task<IActionResult> UpdateNTAstory(int ntaStoryId, [FromBody] NTAst
                         Username = username,
                         MeetingId = meeting.Id,
                         Meeting = meeting,
-                        MeetingDate = meeting.MeetingDate
-                    });
+                        MeetingDate = meeting.MeetingDate,
+                        meeting_CreatedBy = User.Identity.Name
+
+                });
                 }
 
                 await _context.Attendees.AddRangeAsync(attendees);
@@ -894,7 +905,6 @@ public async Task<IActionResult> UpdateNTAstory(int ntaStoryId, [FromBody] NTAst
         {
             var meetings = _context.Meetings.ToList();
 
-            // Load AttendeeUsernames separately for each meeting
             foreach (var meeting in meetings)
             {
                 meeting.AttendeeUsernames = _context.Attendees
@@ -921,15 +931,82 @@ public async Task<IActionResult> UpdateNTAstory(int ntaStoryId, [FromBody] NTAst
         [HttpGet("attendeeDatesByUsername/{username}")]
         public IActionResult GetAttendeeDatesByUsername(string username)
         {
-            // Find dates corresponding to the provided username in Attendees
-            var attendeeDates = _context.Attendees
+            var attendeeMeetingInfo = _context.Attendees
                 .Where(a => a.Username == username)
-                .Select(a => a.MeetingDate) // Assuming MeetingDate is the property to retrieve
+                .Select(a => new
+                {
+                    MeetingDate = a.MeetingDate,
+                    Meeting = a.Meeting 
+                })
                 .ToList();
 
-            return Ok(attendeeDates);
+            return Ok(attendeeMeetingInfo);
         }
 
+
+
+
+        [Authorize(Roles = "Admin, HR, User")]
+        [HttpPut("updatemeeting/{meetingId}")]
+        public async Task<IActionResult> UpdateMeeting(int meetingId, [FromBody] Meeting updatedMeeting)
+        {
+            try
+            {
+                var existingMeeting = await _context.Meetings.FindAsync(meetingId);
+
+                if (existingMeeting == null)
+                {
+                    return NotFound("Meeting not found");
+                }
+
+                existingMeeting.MeetingName = updatedMeeting.MeetingName;
+                existingMeeting.MeetingType = updatedMeeting.MeetingType;
+                existingMeeting.Description = updatedMeeting.Description;
+                existingMeeting.MeetingLocation = updatedMeeting.MeetingLocation;
+                existingMeeting.MeetingLink = updatedMeeting.MeetingLink;
+                existingMeeting.AnnouncementDate = updatedMeeting.AnnouncementDate;
+                existingMeeting.MeetingDate = updatedMeeting.MeetingDate;
+                var existingAttendees = _context.Attendees.Where(a => a.MeetingId == meetingId);
+                _context.Attendees.RemoveRange(existingAttendees);
+
+                foreach (var username in updatedMeeting.AttendeeUsernames)
+                {
+                    var newAttendee = new Attendee
+                    {
+                        Username = username,
+                        MeetingId = meetingId,
+                        Meeting = existingMeeting,
+                        MeetingDate = existingMeeting.MeetingDate,
+                        meeting_CreatedBy = existingMeeting.CreatedBy
+                    };
+
+                    _context.Attendees.Add(newAttendee);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Meeting updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating meeting.");
+            }
+        }
+
+
+
+        [HttpGet("meetingbyId/{id}")]
+        public async Task<ActionResult<Meeting>> GetMeetingById(int id)
+        {
+            var meeting = await _context.Meetings.FindAsync(id);
+
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+
+            return meeting;
+        }
 
 
     }
